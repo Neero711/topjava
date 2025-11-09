@@ -10,11 +10,16 @@ import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class MealsUtil {
 
     public static final int CALORIES_PER_DAY = 2000;
+    private static final Map<Integer, Meal> mealsRepo = new ConcurrentHashMap<>();
+    private final AtomicInteger counter = new AtomicInteger(0);
+
 
     public static void main(String[] args) {
         List<Meal> meals = Arrays.asList(
@@ -48,7 +53,7 @@ public class MealsUtil {
     }
 
     public static MealTo createTo(Meal meal, boolean excess) {
-        return new MealTo(meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
+        return new MealTo(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
     }
 
     private static final List<Meal> MEALS = Arrays.asList(
@@ -67,8 +72,17 @@ public class MealsUtil {
         new Meal(LocalDateTime.of(2024, 1, 17, 20, 0), "Салат Цезарь", 500)
     );
 
+//    public static List<MealTo> getTos() {
+//        return filteredByStreams(MEALS, LocalTime.MIN, LocalTime.MAX, CALORIES_PER_DAY);
+//    }
+
     public static List<MealTo> getTos() {
-        return filteredByStreams(MEALS, LocalTime.MIN, LocalTime.MAX, CALORIES_PER_DAY);
+
+       return mealsRepo.values().stream()
+
     }
 
+    public boolean deleteTo(Integer id){
+        return mealsRepo.remove(id) != null;
+    }
 }
