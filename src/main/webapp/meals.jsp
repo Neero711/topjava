@@ -43,8 +43,7 @@
         <th>Дата и время</th>
         <th>Описание</th>
         <th>Калории</th>
-        <th>Операция 1</th>
-        <th>Операция 2</th>
+        <th>Действия</th>
     </tr>
     </thead>
     <tbody>
@@ -56,6 +55,11 @@
             </td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
+            <td>
+                <a href="meals?action=update&id=${meal.id}">Edit</a>
+                <a href="meals?action=delete&id=${meal.id}"
+                   onclick="return confirm('Are you sure?')">Delete</a>
+            </td>
         </tr>
     </c:forEach>
     </tbody>
